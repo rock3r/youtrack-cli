@@ -6,11 +6,11 @@ developed and tested against a local YouTrack instance.
 ## Quick start (users)
 
 ```bash
-# Install from GitHub (nothing on PyPI yet — see CHANGELOG.md)
-pipx install git+https://github.com/rock3r/youtrack-cli
+# Install from PyPI
+pipx install jetbrains-youtrack-cli
 
-# After the first PyPI release:
-# pipx install jetbrains-youtrack-cli
+# Or from GitHub directly
+# pipx install git+https://github.com/rock3r/youtrack-cli
 
 # Configure your YouTrack instance and save the token
 yt auth login
@@ -37,9 +37,7 @@ yt link JT-1 relates_to JT-2
 
 Run `yt --help` or `yt <command> --help` for options. Use `--output json` for scripting.
 
-**Install:** this repo has not been published to PyPI yet. Use the `pipx install git+…`
-line above, or `make standalone` for a local `dist/yt.pyz`. The PyPI package name will be
-`jetbrains-youtrack-cli` when the first release is tagged.
+**Install:** `pipx install jetbrains-youtrack-cli`, or use `make standalone` for a local `dist/yt.pyz`.
 
 ## Authentication
 
