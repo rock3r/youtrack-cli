@@ -49,7 +49,7 @@ npx skill add rock3r/youtrack-cli
 ```
 
 The `youtrack-cli` skill helps agents use `yt` correctly, including global option
-placement, token precedence, and mutation safety. See `skills/youtrack-cli/SKILL.md`
+placement, token precedence, JSON output, and exit codes. See `skills/youtrack-cli/SKILL.md`
 and `skills/youtrack-cli/evals/evals.json`.
 
 ## Authentication
