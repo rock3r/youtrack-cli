@@ -1,8 +1,5 @@
 # Changelog
 
-This project has **not been published to PyPI yet**. Entries below describe what each
-tag will ship — not fixes to a prior public release.
-
 Format inspired by [Keep a Changelog](https://keepachangelog.com/). Version numbers match
 `pyproject.toml`.
 
@@ -10,7 +7,7 @@ Format inspired by [Keep a Changelog](https://keepachangelog.com/). Version numb
 
 Nothing yet — use this section after the first tag for work landing in the next release.
 
-## [0.1.0] — unreleased
+## [0.1.0] — 2026-07-02
 
 First public preview of `jetbrains-youtrack-cli` (`yt`). Targets the YouTrack REST API
 (developed and tested against YouTrack 2026.2).
@@ -40,3 +37,6 @@ First public preview of `jetbrains-youtrack-cli` (`yt`). Targets the YouTrack RE
 
 - Pre-alpha (`Development Status :: 2 - Pre-Alpha`). API and CLI surface may change.
 - Licensed under UEL v1.0 — see `LICENSE` and README.
+
+[Unreleased]: https://github.com/rock3r/youtrack-cli/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/rock3r/youtrack-cli/releases/tag/v0.1.0
