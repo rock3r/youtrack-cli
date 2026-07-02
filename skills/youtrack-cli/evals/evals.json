@@ -1,0 +1,98 @@
+{
+  "skill_name": "youtrack-cli",
+  "evals": [
+    {
+      "id": "search-open-project",
+      "name": "Search open issues in a project",
+      "prompt": "How do I list the first 30 open issues in the JT project using yt?",
+      "expected_output": "The response should give the exact command `yt issues --project JT --state Open --limit 30` and mention that global options go before the subcommand.",
+      "files": [],
+      "expectations": [
+        "Recommends `yt issues` with `--project JT` and `--state Open`.",
+        "Includes `--limit 30`.",
+        "Places global options before the subcommand or uses no globals that would be misordered."
+      ]
+    },
+    {
+      "id": "create-bug",
+      "name": "Create a bug with type and priority",
+      "prompt": "Create a bug in the DEMO project titled 'Fix the widget' with Major priority and assign it to alice.",
+      "expected_output": "The response should provide `yt create DEMO 'Fix the widget' --type Bug --priority Major --assignee alice` and note that global options go before the subcommand if any are used.",
+      "files": [],
+      "expectations": [
+        "Uses `yt create DEMO 'Fix the widget'`.",
+        "Includes `--type Bug` and `--priority Major`.",
+        "Includes `--assignee alice`.",
+        "Does not put global options after the subcommand."
+      ]
+    },
+    {
+      "id": "global-option-order",
+      "name": "Global option placement gotcha",
+      "prompt": "I tried `yt issues --output json` and it didn't work. What's the correct way?",
+      "expected_output": "The response should explain that global options must come before the subcommand: `yt --output json issues`.",
+      "files": [],
+      "expectations": [
+        "Identifies the misordered global option.",
+        "Gives the corrected command `yt --output json issues`."
+      ]
+    },
+    {
+      "id": "auth-login",
+      "name": "Persist credentials",
+      "prompt": "How do I save my YouTrack URL and token so I don't have to pass them every time?",
+      "expected_output": "The response should recommend `yt auth login` and mention the config file location and permissions.",
+      "files": [],
+      "expectations": [
+        "Recommends `yt auth login`.",
+        "Mentions the config file path `~/.config/youtrack-cli/config.toml`.",
+        "Mentions token source precedence (file > .env, etc.) only if relevant."
+      ]
+    },
+    {
+      "id": "op-precedence",
+      "name": "1Password is the last token source",
+      "prompt": "I set YOUTRACK_TOKEN in my shell but also pass --op-item. Why is the op token not being used?",
+      "expected_output": "The response should explain that environment token takes precedence over 1Password, because op is the last token source in the resolver order.",
+      "files": [],
+      "expectations": [
+        "States that env token (`YOUTRACK_TOKEN`) wins over `--op-*`.",
+        "Explains that 1Password is the fallback token source, not an override."
+      ]
+    },
+    {
+      "id": "edit-command-language",
+      "name": "Use raw command language for edits",
+      "prompt": "How do I set the Subsystem custom field to UI on issue JT-1?",
+      "expected_output": "The response should use `yt edit JT-1 --command 'Subsystem UI'` and note that `--field` is also an option if the field name matches the schema.",
+      "files": [],
+      "expectations": [
+        "Provides a working command using `--command`.",
+        "Alternatively uses `--field 'Subsystem=UI'`.",
+        "Does not suggest an invalid or ambiguous flag."
+      ]
+    },
+    {
+      "id": "multi-value-field",
+      "name": "Multi-value field syntax",
+      "prompt": "How do I set multiple subsystems on a new issue?",
+      "expected_output": "The response should use `--field 'Subsystems=Core,UI'` with comma-separated values.",
+      "files": [],
+      "expectations": [
+        "Uses `--field` with comma-separated values.",
+        "Gives a concrete example such as `Subsystems=Core,UI`."
+      ]
+    },
+    {
+      "id": "comment-and-link",
+      "name": "Comment and link issues",
+      "prompt": "Add a comment to JT-1 and link it as related to JT-2.",
+      "expected_output": "The response should give two commands: `yt comment JT-1 '...'` and `yt link JT-1 relates_to JT-2`.",
+      "files": [],
+      "expectations": [
+        "Provides `yt comment JT-1 ...` with a comment text placeholder.",
+        "Provides `yt link JT-1 relates_to JT-2` or similar valid link type."
+      ]
+    }
+  ]
+}

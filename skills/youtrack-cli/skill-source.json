@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "skill": "youtrack-cli",
+  "attribution": "Original skill derived from the jetbrains-youtrack-cli README and contracts docs.",
+  "sources": [
+    {
+      "type": "local-original-content",
+      "role": "primary-source",
+      "label": "jetbrains-youtrack-cli project documentation and CLI contracts",
+      "version": "0.1.0",
+      "versionSource": "gitTag",
+      "fetchedAt": "2026-07-02",
+      "license": "UEL-1.0"
+    }
+  ]
+}

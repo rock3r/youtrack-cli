@@ -5,7 +5,9 @@ Format inspired by [Keep a Changelog](https://keepachangelog.com/). Version numb
 
 ## [Unreleased]
 
-Nothing yet — use this section after the first tag for work landing in the next release.
+### Added
+
+- Agent skill `skills/youtrack-cli/` for discovering and using the `yt` CLI via `npx skill add`.
 
 ## [0.1.0] — 2026-07-02
 
