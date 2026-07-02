@@ -6,6 +6,9 @@
 *.swo
 *~
 
+# skill eval run results (prompts in evals/ are committed; per-run outputs are not)
+skills/*/evals/iteration-*.md
+
 # local youtrack / env
 .youtrack-server/
 node_modules/

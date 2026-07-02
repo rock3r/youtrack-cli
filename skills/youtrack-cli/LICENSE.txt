@@ -1,0 +1,8 @@
+Copyright (c) 2026 The youtrack-cli authors
+
+Licensed under the Unenshittifiable License (UEL) v1.0.
+Source: https://uelicense.eu
+
+See the full license text in the repository LICENSE file.
+Use it. Fork it. Learn from it. Self-host it. Improve it.
+Just don't enshittify it.

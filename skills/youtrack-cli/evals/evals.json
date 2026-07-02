@@ -2,8 +2,8 @@
   "skill_name": "youtrack-cli",
   "evals": [
     {
-      "id": "search-open-project",
-      "name": "Search open issues in a project",
+      "id": 0,
+      "name": "search-open-project",
       "prompt": "How do I list the first 30 open issues in the JT project using yt?",
       "expected_output": "The response should give the exact command `yt issues --project JT --state Open --limit 30` and mention that global options go before the subcommand.",
       "files": [],
@@ -14,8 +14,8 @@
       ]
     },
     {
-      "id": "create-bug",
-      "name": "Create a bug with type and priority",
+      "id": 1,
+      "name": "create-bug",
       "prompt": "Create a bug in the DEMO project titled 'Fix the widget' with Major priority and assign it to alice.",
       "expected_output": "The response should provide `yt create DEMO 'Fix the widget' --type Bug --priority Major --assignee alice` and note that global options go before the subcommand if any are used.",
       "files": [],
@@ -27,8 +27,8 @@
       ]
     },
     {
-      "id": "global-option-order",
-      "name": "Global option placement gotcha",
+      "id": 2,
+      "name": "global-option-order",
       "prompt": "I tried `yt issues --output json` and it didn't work. What's the correct way?",
       "expected_output": "The response should explain that global options must come before the subcommand: `yt --output json issues`.",
       "files": [],
@@ -38,20 +38,20 @@
       ]
     },
     {
-      "id": "auth-login",
-      "name": "Persist credentials",
+      "id": 3,
+      "name": "auth-login",
       "prompt": "How do I save my YouTrack URL and token so I don't have to pass them every time?",
       "expected_output": "The response should recommend `yt auth login` and mention the config file location and permissions.",
       "files": [],
       "expectations": [
         "Recommends `yt auth login`.",
         "Mentions the config file path `~/.config/youtrack-cli/config.toml`.",
-        "Mentions token source precedence (file > .env, etc.) only if relevant."
+        "Mentions token source precedence (flag > env > .env > config > op) only if relevant."
       ]
     },
     {
-      "id": "op-precedence",
-      "name": "1Password is the last token source",
+      "id": 4,
+      "name": "op-precedence",
       "prompt": "I set YOUTRACK_TOKEN in my shell but also pass --op-item. Why is the op token not being used?",
       "expected_output": "The response should explain that environment token takes precedence over 1Password, because op is the last token source in the resolver order.",
       "files": [],
@@ -61,8 +61,8 @@
       ]
     },
     {
-      "id": "edit-command-language",
-      "name": "Use raw command language for edits",
+      "id": 5,
+      "name": "edit-command-language",
       "prompt": "How do I set the Subsystem custom field to UI on issue JT-1?",
       "expected_output": "The response should use `yt edit JT-1 --command 'Subsystem UI'` and note that `--field` is also an option if the field name matches the schema.",
       "files": [],
@@ -73,8 +73,8 @@
       ]
     },
     {
-      "id": "multi-value-field",
-      "name": "Multi-value field syntax",
+      "id": 6,
+      "name": "multi-value-field",
       "prompt": "How do I set multiple subsystems on a new issue?",
       "expected_output": "The response should use `--field 'Subsystems=Core,UI'` with comma-separated values.",
       "files": [],
@@ -84,14 +84,48 @@
       ]
     },
     {
-      "id": "comment-and-link",
-      "name": "Comment and link issues",
+      "id": 7,
+      "name": "comment-and-link",
       "prompt": "Add a comment to JT-1 and link it as related to JT-2.",
       "expected_output": "The response should give two commands: `yt comment JT-1 '...'` and `yt link JT-1 relates_to JT-2`.",
       "files": [],
       "expectations": [
         "Provides `yt comment JT-1 ...` with a comment text placeholder.",
         "Provides `yt link JT-1 relates_to JT-2` or similar valid link type."
+      ]
+    },
+    {
+      "id": 8,
+      "name": "dry-run-create",
+      "prompt": "I want to create an issue in an unfamiliar project but I'm not sure if my field names are right. What should I do first?",
+      "expected_output": "The response should recommend using `--dry-run` to preview the request body before sending the create command.",
+      "files": [],
+      "expectations": [
+        "Mentions `yt create ... --dry-run`.",
+        "Suggests checking the project schema / field names before the real create."
+      ]
+    },
+    {
+      "id": 9,
+      "name": "json-scripting",
+      "prompt": "Write a shell script that lists all open issues in project JT as JSON and exits non-zero on error.",
+      "expected_output": "The response should use `yt --output json issues --project JT --state Open` and check the exit code.",
+      "files": [],
+      "expectations": [
+        "Uses `yt --output json issues` (global option before subcommand).",
+        "Checks the command exit status (e.g., `if [ $? -ne 0 ]` or `set -e`).",
+        "Does not suggest parsing the human table."
+      ]
+    },
+    {
+      "id": 10,
+      "name": "negative-trigger-board",
+      "prompt": "How do I set up a new agile board in YouTrack?",
+      "expected_output": "The response should NOT invoke the youtrack-cli skill; it should say the skill does not cover boards/admin tasks.",
+      "files": [],
+      "expectations": [
+        "Does not provide a `yt` command for board creation.",
+        "States that boards/admin tasks are outside the CLI's scope."
       ]
     }
   ]

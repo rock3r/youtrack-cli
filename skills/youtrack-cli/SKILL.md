@@ -1,7 +1,8 @@
 ---
 name: youtrack-cli
-description: Use when asked to create, search, edit, comment, link, or configure issues in JetBrains YouTrack via the command-line tool yt (jetbrains-youtrack-cli).
-compatibility: Requires a Python 3.10+ environment with the jetbrains-youtrack-cli package (pipx install), or the standalone dist/yt.pyz. Needs a YouTrack base URL and a permanent API token.
+description: |
+  Use when asked to create, search, edit, comment, link, or configure issues in JetBrains YouTrack via the yt command-line tool (package jetbrains-youtrack-cli, YouTrack REST API, issue tracker CLI). Handles global option placement, token precedence, JSON output, and exit code WORKFLOW errors.
+compatibility: Python 3.10+ with jetbrains-youtrack-cli (pipx) or dist/yt.pyz. Requires network access to the YouTrack base URL, a permanent API token, and optionally the 1Password CLI (op) for token sourcing.
 license: UEL-1.0
 metadata:
   package: jetbrains-youtrack-cli
@@ -72,72 +73,51 @@ yt --output json issues
 yt --base-url https://youtrack.example.com --token $TOKEN issues
 ```
 
-## Search and show issues
+## Common commands
 
-Default `yt issues` shows the current user's unresolved issues (`for: me #Unresolved`). Use `--all` to remove that default.
+Quick examples; for the full matrix see `references/commands.md`.
+
+Search:
 
 ```bash
 yt issues --all --limit 50
 yt issues --project JT --state Open
-yt issues --assignee alice --sort "Priority desc"
-yt issues --query "project: JT #Unresolved state: Open" --limit 20 --offset 20
 yt show JT-1
 ```
 
-For scripting, use `--output json` or `--json`:
+Create:
 
 ```bash
-yt --output json issues --project JT --limit 100
+yt create DEMO "Fix the widget" --type Bug --priority Major --assignee alice
 ```
 
-## Create an issue
-
-```bash
-yt create DEMO "Fix the widget" --description "It is broken." \
-  --type Bug --priority Major --state Submitted --assignee alice
-```
-
-Use repeatable `--field` for custom fields. Split on the first `=` only:
-
-```bash
-yt create DEMO "Add feature" --type Task --field "Subsystems=Core" --field "Target version=2026.1"
-```
-
-Multi-value fields use comma-separated values:
-
-```bash
-yt create DEMO "Cross-platform fix" --field "Subsystems=Core,UI"
-```
-
-Use `--dry-run` to preview the request body without sending it:
-
-```bash
-yt create DEMO "Test" --type Task --dry-run
-```
-
-## Edit an issue
+Edit:
 
 ```bash
 yt edit JT-1 --state Done --summary "Fixed the widget"
-yt edit JT-1 --description "Updated description"
-yt edit JT-1 --assignee bob
-yt edit JT-1 --field "Priority=Critical" --field "Subsystems=Core,UI"
-```
-
-For operations the CLI does not expose as a flag, use raw YouTrack command language:
-
-```bash
 yt edit JT-1 --command "Subsystem UI"
 ```
 
-## Comment and link
+Comment and link:
 
 ```bash
 yt comment JT-1 "Verified on staging"
 yt link JT-1 relates_to JT-2
 ```
 
-Common link types: `relates_to`, `duplicates`, `depends_on`.
+## Field syntax
+
+Repeatable `--field` accepts `Name=value` and splits on the first `=` only. Multi-value fields are comma-separated:
+
+```bash
+yt create DEMO "Cross-platform fix" --field "Subsystems=Core,UI"
+```
+
+Use `--dry-run` to preview the request body before sending:
+
+```bash
+yt create DEMO "Test" --type Task --dry-run
+```
 
 ## Output and exit codes
 
@@ -151,8 +131,9 @@ Common link types: `relates_to`, `duplicates`, `depends_on`.
 - **No mixing of `.env` and config file for tokens.** If the token comes from `.env`, the config-file base URL is ignored, and vice versa. Flags and env vars are always composable per-key.
 - **1Password is the last source.** If `YOUTRACK_TOKEN` or a config token exists, `--op-*` will not be used.
 - **Empty `--token` does not fall through.** An explicit empty string is still considered set and will fail with a config error.
-- **Multi-value fields are comma-separated.** `Assignees=alice,bob` or `Subsystems=Core,UI`.
-- **Server-side validation applies.** Assignee validation is done by YouTrack; the CLI surfaces the error with a contextual hint.
+- **Multi-value fields are comma-separated.** `Subsystems=Core,UI`.
+- **Assignee is a single login.** Pass `--assignee alice`, not a comma-separated list. YouTrack validates it server-side.
+- **Server-side validation applies.** Field and assignee validation is done by YouTrack; the CLI surfaces the error with a contextual hint.
 - **Workflow guards.** Some edits may be rejected by YouTrack workflows with exit code `WORKFLOW` (6). Inspect the error field and rule name.
 
 ## Validation
@@ -167,16 +148,7 @@ Before declaring a command ready, check:
 
 ## References
 
-- For full project setup and local dev server, see `docs/local-youtrack.md`.
-- For detailed command contracts, exit codes, and resolver behavior, see `docs/contracts.md`.
-- For user journeys and examples, see `docs/cuj-map.md`.
+- For the full command matrix, read `references/commands.md` (bundled in this skill).
 - For CLI help, run `yt --help` or `yt <command> --help`.
 
-## Troubleshooting
-
-- **`yt status` fails with 401/403.** Check that `YOUTRACK_TOKEN` or `--token` is set to a valid permanent token. Verify the token is for the intended `--base-url`.
-- **`yt issues` returns nothing.** The default query is `for: me #Unresolved`; use `--all` to see every issue, or add `--project` / `--query` filters.
-- **`--assignee` is rejected.** YouTrack validates assignees server-side. Pass the login name (e.g. `alice`), not the full display name.
-- **`--field` value is rejected.** Custom field names must match the project schema exactly. Use `--dry-run` to inspect the typed body being sent.
-- **Wrong server.** If you have both a `.env` and a config file, remember that the token source determines which base URL is used; `.env` and config-file tokens are not mixed.
-- **No color.** Use `--no-color` or set `NO_COLOR` in the environment; JSON mode disables color automatically.
+If you are working inside the `jetbrains-youtrack-cli` repository, also see `docs/contracts.md`, `docs/cuj-map.md`, and `docs/local-youtrack.md` for developer-level detail.

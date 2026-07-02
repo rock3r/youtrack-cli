@@ -39,6 +39,19 @@ Run `yt --help` or `yt <command> --help` for options. Use `--output json` for sc
 
 **Install:** `pipx install jetbrains-youtrack-cli`, or use `make standalone` for a local `dist/yt.pyz`.
 
+### Agent skill
+
+If your agent harness supports Agent Skills (`agentskills.io`), add this repo's skill
+from the top-level `skills/` directory:
+
+```bash
+npx skill add rock3r/youtrack-cli
+```
+
+The `youtrack-cli` skill helps agents use `yt` correctly, including global option
+placement, token precedence, and mutation safety. See `skills/youtrack-cli/SKILL.md`
+and `skills/youtrack-cli/evals/evals.json`.
+
 ## Authentication
 
 `yt` needs a YouTrack base URL and a permanent API token. It looks them up in this
