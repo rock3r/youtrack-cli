@@ -1,0 +1,27 @@
+# editor / os
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# local youtrack / env
+.youtrack-server/
+node_modules/
+.env
+.env.local
+*.log
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+build/
+dist/
+*.pyz
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
