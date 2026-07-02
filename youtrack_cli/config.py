@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import os
 import sys
-import typing
 from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
@@ -208,6 +207,7 @@ def _read_config(path: str | Path | None) -> dict[str, Any]:
         return {}
     try:
         with p.open("rb") as f:
-            return typing.cast(dict[str, Any], tomllib.load(f))
+            data: dict[str, Any] = tomllib.load(f)
+            return data
     except Exception as exc:
         raise ConfigError(f"Could not read config file {p}: {exc}") from exc
