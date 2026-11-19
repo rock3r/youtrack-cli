@@ -3,6 +3,9 @@
 A CLI for the [JetBrains YouTrack REST API](https://www.jetbrains.com/help/youtrack/devportal/youtrack-rest-api.html),
 developed and tested against a local YouTrack instance.
 
+> [!NOTE]
+> Archived: use the [official YouTrack CLI](https://github.com/JetBrains/youtrack-cli) instead.
+
 ## Quick start (users)
 
 ```bash
